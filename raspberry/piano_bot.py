@@ -2,8 +2,6 @@ import serial
 from binascii import hexlify
 from time import sleep
 
-import warnings
-
 # arrays to be transmitted
 # на мой взгляд лучше бы смотрелся массив пар "нота-длительность", чем два отдельных массива (тем более что в питоне есть родные туплы). 
 # Сейчас мне довольно трудно найти длительность второй ноты A1 например
