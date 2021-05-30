@@ -1,7 +1,18 @@
+
+#warning я лично резкий противник размещения парнымх друг другу файлов .с и .h в разные каталоги. Когда файлов немного, то вроде бы все хорошо. Но вот если их много, да еще с подкаталогами, у вас все дерево проекта фактически дублируется! И при этом оно в IDE занимает вдвое больше места, я постоянно в нем теряюсь, не понимая, вот же каталог открыт - почему там нет нужного мне файла? А, он _в другом точно таком же каталоге, только на экран ниже_
+
+#warning К тому же совершенно непонятно, какие плюсы такое размещение файлов дает? Я никаких не вижу.
+#warning Вообще, разделение на .h и .c - само по себе источник боли, зачем усиливать ее еще? :)
+
 #include "main.h"
+
+#warning В целом не очень хорошо, что у вас вся программа по сути в одном файле - хоть он и не очень большой. При этом все функции у вас глобальные и не статические, все дефайны тоже.
+#warning Почти всегда это плохая идея.
 
 static int32_t steps = 0;			// counter for steps made by step motor
 static int32_t keys_array[25];      // array that contains keys that should be played
+
+#warning еще у вас во всем коде перемешаны табы и пробелы Т_Т
 
 int main(void)
 {
@@ -37,12 +48,14 @@ int main(void)
 	// light LED up to show that track is over
 	GPIO_WriteBit(GPIOC, GPIO_Pin_13, Bit_RESET);
 
+    #warning хм т.е. все удовольствие одноразовое и stm надо перезагрузить, если хочется сыграть еще раз? Не особенно удобно, имхо
 	while (1){}
 
 	return 0;
 }
 
 void delay(uint32_t time){
+    #warning тут счетчику не повредит volatile, иначе компилятор может решить его соптимизировать
 	for (uint32_t i = 0; i <= time; i ++){}
 }
 
@@ -85,6 +98,7 @@ void step_motor_init(void){
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOA, ENABLE);
 	
+    #warning так а почему светодиод в настройке мотора?..
 	// C13 - LED
     GPIOC_init.GPIO_Pin = GPIO_Pin_13;
     GPIOC_init.GPIO_Speed = GPIO_Speed_10MHz;
@@ -197,7 +211,7 @@ void calibrate(void){
 		}
 	}
 }
-
+#warning массив-то уже создан, так что это скорее fill, чем create
 void create_keys_array(void){
 	for (uint8_t i = 0; i < 24; i++)
 	{
@@ -232,6 +246,9 @@ void receive_music(uint16_t * notes, uint16_t * delays, uint16_t length){
 
 	if (end_byte != END_OF_NOTES){
 		while (1){
+            
+            #warning эти волшебные делэи я где-то уже видел.. несколько раз :) 
+            #warning плохо понятно, что это за РС.13 и зачем вы им тут дергаете?
 			GPIO_WriteBit(GPIOC, GPIO_Pin_13, Bit_RESET);
 			delay(20000000);
 			GPIO_WriteBit(GPIOC, GPIO_Pin_13, Bit_SET);

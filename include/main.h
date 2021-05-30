@@ -2,6 +2,8 @@
 #include "stdbool.h"
 #include "stdlib.h"
 
+#warning а че это за True такое, с большой буквы?
+
 #define Try_Key True
 #define Calibrate True
 
